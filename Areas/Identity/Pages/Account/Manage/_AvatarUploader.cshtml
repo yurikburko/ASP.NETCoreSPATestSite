@@ -1,0 +1,28 @@
+﻿@model IndexModel
+@{
+    var isAvatarSpecified = Model.Input.Avatar != null && Model.Input.Avatar.Length > 0;
+    var initImgSrcValur = isAvatarSpecified ?
+        $"data:{Model.Input.AvatarFileType};base64,{Convert.ToBase64String(Model.Input.Avatar)}" :
+        "";
+}
+
+<div class="avatar-uploader-wrapper @(!isAvatarSpecified ? "empty" : "")">
+    <label class="status" data-testid="image-upload-label">
+        <div class="image_wrapper">
+            <div class="title">Upload</div>
+                <div class="image">
+                    <img id="avatarImg" src="@initImgSrcValur" alt="" />
+                </div>
+        </div>
+        <input asp-for="Input.Avatar" id="avatarInput" type="file" accept=".png,.jpg,.jpeg,.svg" />
+    </label>
+    <div class="delete_wrapper">
+        <div class="delete_btn">
+            <div id="deleteAvatar" class="actions_menu_item">
+                <svg viewBox="0 0 16 16" fill="currentColor" strokeWidth="1.6px" class="icon">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M6.5999 3.50002C6.5999 3.00297 7.00285 2.60002 7.4999 2.60002H8.4999C8.99696 2.60002 9.3999 3.00297 9.3999 3.50002V4.40002H6.5999V3.50002ZM5.3999 4.40002H2.9999C2.66853 4.40002 2.3999 4.66865 2.3999 5.00002C2.3999 5.3314 2.66853 5.60002 2.9999 5.60002H5.9999H9.9999H12.9999C13.3313 5.60002 13.5999 5.3314 13.5999 5.00002C13.5999 4.66865 13.3313 4.40002 12.9999 4.40002H10.5999V3.50002C10.5999 2.34023 9.6597 1.40002 8.4999 1.40002H7.4999C6.3401 1.40002 5.3999 2.34023 5.3999 3.50002V4.40002ZM3.45715 6.40155C3.78768 6.37794 4.07477 6.62675 4.09838 6.95728L4.49887 12.5641C4.53251 13.0351 4.92441 13.4 5.39658 13.4H10.6032C11.0754 13.4 11.4673 13.0351 11.5009 12.5641L11.9014 6.95728C11.925 6.62675 12.2121 6.37794 12.5427 6.40155C12.8732 6.42516 13.122 6.71224 13.0984 7.04277L12.6979 12.6496C12.6194 13.7486 11.705 14.6 10.6032 14.6H5.39658C4.29484 14.6 3.38041 13.7486 3.30192 12.6496L2.90143 7.04277C2.87782 6.71224 3.12663 6.42516 3.45715 6.40155Z"></path>
+                </svg>
+            </div>
+        </div>
+    </div>   
+</div>
