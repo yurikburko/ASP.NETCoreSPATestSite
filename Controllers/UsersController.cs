@@ -1,19 +1,12 @@
 ﻿using AutoMapper;
-using Duende.IdentityServer;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.EntityFrameworkCore;
 using SPATestSite.Helpers;
 using SPATestSite.Models;
 using SPATestSite.Models.DTO;
-using System.Linq;
-using System.Linq.Expressions;
 using System.Net;
-using System.Runtime.InteropServices;
 
 namespace UserManagementReact.Controllers
 {
@@ -171,8 +164,10 @@ namespace UserManagementReact.Controllers
                     }
                 }
             }
-            catch
+            catch(Exception e)
             {
+                _logger.LogError(e, $"User avatar scaling error. User id = {id}");
+                
                 // System.Drawing.Common only supported on Windows
                 // so the code above will not work on linux
                 // TODO. Find better solution for avatars handling/resising - use external image service (and optionally storage) instead

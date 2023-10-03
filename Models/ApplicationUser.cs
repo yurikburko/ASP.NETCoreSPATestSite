@@ -8,6 +8,8 @@ namespace SPATestSite.Models
     {
         public byte[] Avatar { get; set; }
         public string AvatarFileType { get; set; }
+        public int LoginsCount { get; set; }
 
+        public DateTime? LastLoginDate { get; set; }
     }
 }

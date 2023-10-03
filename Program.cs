@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using SPATestSite.Authorization;
 using SPATestSite.Data;
 using SPATestSite.Models;
+using SPATestSite.Services;
 using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +18,8 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
+
+builder.Services.AddScoped<SignInManager<ApplicationUser>, ApplicationSignInManager>();
 
 builder.Services.AddIdentityServer()
     .AddApiAuthorization<ApplicationUser, ApplicationDbContext>()

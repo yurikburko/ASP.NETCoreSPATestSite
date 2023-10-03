@@ -43,9 +43,11 @@ export const UsersList: React.FC = () => {
                     <th>Id</th>
                     <th>Name</th>
                     <th>Email</th>
-                    <th>PhoneNumber</th>
-                    <th>TwoFactorEnabled</th>
+                    <th>Phone Number</th>
+                    <th>TwoFactor Enabled</th>
                     <th>Role</th>
+                    <th>Logins Count</th>
+                    <th>Last Login time</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -58,6 +60,8 @@ export const UsersList: React.FC = () => {
                     <td>{user.phoneNumber}</td>
                     <td>{user.twoFactorEnabled ? "Yes" : "No"}</td>
                     <td>{user.role}</td>
+                    <td>{user.loginsCount}</td>
+                    <td>{user.lastLoginDateStr}</td>
                     <td>
                         <ActionsColumn user={user} />
                     </td>

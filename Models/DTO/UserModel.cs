@@ -15,5 +15,8 @@ namespace SPATestSite.Models.DTO
         public bool TwoFactorEnabled { get; set; }
 
         public bool IsAdmin { get; set; }
+        public int LoginsCount { get; set; }
+
+        public DateTime? LastLoginDate { get; set; }
     }
 }

@@ -7,6 +7,8 @@ export type User = {
     phoneNumber: string;
     twoFactorEnabled: boolean;
     isAdmin: boolean;
+    loginsCount: number;
+    lastLoginDate?: string;
 };
 
 export type UsersState = {
