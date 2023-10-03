@@ -20,6 +20,7 @@ export const LoginActions = {
 };
 
 const prefix = '/authentication';
+const apiPrefix = '/api';
 
 export const ApplicationPaths = {
   DefaultLoginRedirectPath: '/',
@@ -34,5 +35,15 @@ export const ApplicationPaths = {
   LoggedOut: `${prefix}/${LogoutActions.LoggedOut}`,
   LogOutCallback: `${prefix}/${LogoutActions.LogoutCallback}`,
   IdentityRegisterPath: 'Identity/Account/Register',
-  IdentityManagePath: 'Identity/Account/Manage'
+  IdentityManagePath: 'Identity/Account/Manage',
+  
+  users: {
+    get: `${apiPrefix}/users`,
+    delete: id => `${apiPrefix}/users/${id}`,
+    assignAdminRole: id => `${apiPrefix}/users/${id}/assign-admin-role`,
+    unassignAdminRole: id => `${apiPrefix}/users/${id}/unassign-admin-role`,
+    getAvatar: id => `${apiPrefix}/users/${id}/avatar`
+  }
 };
+
+export const adminRole = "Admin";

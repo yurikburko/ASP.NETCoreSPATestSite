@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using SPATestSite.Models;
-using System.ComponentModel.DataAnnotations;
-using System.Net.Mail;
 
 namespace SPATestSite.Data
 {

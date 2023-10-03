@@ -1,0 +1,7 @@
+@host = https://localhost:7095
+@access_token = insert_token_value_here
+
+### get users
+GET {{host}}/api/users
+Authorization: Bearer {{access_token}}
+

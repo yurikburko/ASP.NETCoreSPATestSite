@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
+using SPATestSite.Authorization;
 using SPATestSite.Data;
 using SPATestSite.Models;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,10 +19,22 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.R
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddIdentityServer()
-    .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
+    .AddApiAuthorization<ApplicationUser, ApplicationDbContext>()
+    .AddProfileService<ProfileService>();
 
 builder.Services.AddAuthentication()
     .AddIdentityServerJwt();
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("IsAdmin",
+        policy =>
+        {
+            // Even though we are using JwtClaimTypes in the ProfileService of the IdentityServer
+            // the actual user claims are converted to those in System.Security.Claims.ClaimTypes so check for them here
+            policy.RequireClaim(ClaimTypes.Role, "Admin");
+        });
+});
 
 builder.Services.AddControllersWithViews();
 var mvcBuilder = builder.Services.AddRazorPages();
@@ -41,6 +53,10 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequiredLength = 1;
     options.Password.RequiredUniqueChars = 0;
 });
+
+builder.Services.AddAutoMapper(typeof(UsersMappingProfile));
+
+builder.Services.AddHealthChecks();
 
 var app = builder.Build();
 
