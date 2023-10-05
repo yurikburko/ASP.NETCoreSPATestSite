@@ -3,15 +3,15 @@ import * as React from "react";
 import { DynamicModuleLoader } from "redux-dynamic-modules";
 import { getUsersModule } from "../module";
 import { loadUsers } from "../state/sagas/loadUsers";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { isUsersLoading, usersListSelector } from "../state/selectors";
 import { useReduxAction } from "../../hooks/useReduxAction";
 import Loading from "../../components/shared/loading/Loading";
-import authService from "../../components/api-authorization/AuthorizeService";
 import { ApplicationPaths } from "../../components/api-authorization/ApiAuthorizationConstants";
 import { ActionsColumn } from "./ActionsColumn";
 import { UserNameColumn } from "./UserNameColumn";
+import { isUserAuthenticated } from "../../redux/authorization/authenticationModule";
 
 const Message: React.FC<{message: string}> = ({message}) => {
     return (
@@ -74,28 +74,14 @@ export const UsersList: React.FC = () => {
 };
 
 export const UsersListWrapper: React.FC = () => {
-    const [authenticationState, setAuthenticationState] = useState({
-        ready: false,
-        authenticated: false
-    });
-
-    const populateAuthenticationState = async () => {
-        const authenticated = await authService.isAuthenticated();
-        setAuthenticationState({ ready: true, authenticated });
-      }
-
-    useEffect(() => {
-        populateAuthenticationState();
-    }, []);
-
-    const content = !authenticationState.ready ? 
-        <Loading message="Getting user authentication data..."/> :
-        authenticationState.authenticated ? <UsersList /> : ( 
-            <div>
-                <Message message="To see users list please login to the application."/>
-                <a className="btn btn-primary" href={ApplicationPaths.Login} role="button">Login</a>
-            </div>
-        );
+    const isAuthenticated = useSelector(isUserAuthenticated);
+    
+    const content = isAuthenticated ? <UsersList /> : ( 
+        <div>
+            <Message message="To see users list please login to the application."/>
+            <a className="btn btn-primary" href={ApplicationPaths.Login} role="button">Login</a>
+        </div>
+    );
 
     return (
         <>

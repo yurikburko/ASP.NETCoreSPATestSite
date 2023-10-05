@@ -14,6 +14,7 @@ const isUserAdmin = (user: Profile) => {
 }
 
 export const isAuthenticationInitialized = (state: CurrentUserState) => !!state.currentUser;
+export const isUserAuthenticated = (state: CurrentUserState) => state.currentUser?.isAuthenticated;
 export const currentUserId = (state: CurrentUserState) => state.currentUser?.id;
 export const isCurrentUserAdmin = (state: CurrentUserState) => state.currentUser?.isAdmin;
 export const currentUserInfo = (state: CurrentUserState) => state.currentUser;
