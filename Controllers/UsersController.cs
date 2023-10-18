@@ -17,7 +17,7 @@ namespace UserManagementReact.Controllers
     {
 		private readonly ILogger<UsersController> _logger;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly RoleManager<ApplicationRole> _roleManager;
         private readonly IMapper _mapper;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
@@ -25,7 +25,7 @@ namespace UserManagementReact.Controllers
 			ILogger<UsersController> logger,
             IMapper mapper,
             UserManager<ApplicationUser> userManager,
-            RoleManager<IdentityRole> roleManager,
+            RoleManager<ApplicationRole> roleManager,
             IWebHostEnvironment webHostEnvironment)
 		{
 			_logger = logger;
@@ -178,7 +178,8 @@ namespace UserManagementReact.Controllers
         }
 
 
-        private async Task<List<UserModel>> GetUsers(Func<ApplicationUser, bool> filterPredicate = null)
+        /*
+        private async Task<List<UserModel>> GetUsers(Func<ApplicationUser, bool>? filterPredicate = null)
         {
             var query = _userManager.Users.AsNoTracking();
 
@@ -198,6 +199,31 @@ namespace UserManagementReact.Controllers
             }
 
             return result;
+        }
+        */
+
+        private async Task<List<UserModel>> GetUsers(Func<ApplicationUser, bool>? filterPredicate = null)
+        {
+            var adminRole = await _roleManager.FindByNameAsync(Roles.Admin);
+
+            var query = _userManager.Users.AsNoTracking();
+
+            if (filterPredicate != null)
+            {
+                query = query.Where(filterPredicate).AsQueryable();
+            }
+
+            return await query.Select(u => new UserModel
+            {
+                Id = u.Id,
+                Email = u.Email,
+                UserName = u.UserName,
+                PhoneNumber = u.PhoneNumber,
+                TwoFactorEnabled = u.TwoFactorEnabled,
+                LastLoginDate = u.LastLoginDate,
+                LoginsCount = u.LoginsCount,
+                IsAdmin = u.UserRoles.Any(ur => ur.RoleId == adminRole!.Id),
+            }).ToListAsync();
         }
 
         private ObjectResult Problem(string title, IdentityResult identityResult)

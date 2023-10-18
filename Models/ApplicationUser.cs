@@ -11,5 +11,28 @@ namespace SPATestSite.Models
         public int LoginsCount { get; set; }
 
         public DateTime? LastLoginDate { get; set; }
+
+        // Navigation properties
+        public virtual ICollection<ApplicationUserRole> UserRoles { get; set; }
+    }
+
+    public class ApplicationRole : IdentityRole
+    {
+        public ApplicationRole() : base()
+        {
+        }
+
+        public ApplicationRole(string roleName) : base(roleName)
+        {
+        }
+
+        // Navigation properties
+        public virtual ICollection<ApplicationUserRole> UserRoles { get; set; }
+    }
+
+    public class ApplicationUserRole : IdentityUserRole<string>
+    {
+        public virtual ApplicationUser User { get; set; }
+        public virtual ApplicationRole Role { get; set; }
     }
 }

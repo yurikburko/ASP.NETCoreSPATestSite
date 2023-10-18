@@ -11,11 +11,11 @@ namespace SPATestSite.Data
             // dotnet user-secrets set SeedUserPW <pw>
             // The admin user can do anything
 
-            var adminID = await EnsureUserAssignedToRole(serviceProvider, predefinedAdminUserPw, "administrator@example.com");
-            await EnsureRole(serviceProvider, adminID, Roles.Admin);
+            var adminID = await EnsureUserCreated(serviceProvider, predefinedAdminUserPw, "administrator@example.com");
+            await EnsureRoleCreatedAndAssignedToUser(serviceProvider, adminID, Roles.Admin);
         }
 
-        private static async Task<string> EnsureUserAssignedToRole(IServiceProvider serviceProvider,
+        private static async Task<string> EnsureUserCreated(IServiceProvider serviceProvider,
                                                     string testUserPw, string userEmail)
         {
             var userManager = serviceProvider.GetService<UserManager<ApplicationUser>>();
@@ -35,14 +35,14 @@ namespace SPATestSite.Data
             return user.Id;
         }
 
-        private static async Task<IdentityResult> EnsureRole(IServiceProvider serviceProvider, string userId, string role)
+        private static async Task<IdentityResult> EnsureRoleCreatedAndAssignedToUser(IServiceProvider serviceProvider, string userId, string role)
         {
-            var roleManager = serviceProvider.GetService<RoleManager<IdentityRole>>();
+            var roleManager = serviceProvider.GetService<RoleManager<ApplicationRole>>();
 
             IdentityResult IR;
             if (!await roleManager.RoleExistsAsync(role))
             {
-                IR = await roleManager.CreateAsync(new IdentityRole(role));
+                IR = await roleManager.CreateAsync(new ApplicationRole(role));
             }
 
             var userManager = serviceProvider.GetService<UserManager<ApplicationUser>>();
