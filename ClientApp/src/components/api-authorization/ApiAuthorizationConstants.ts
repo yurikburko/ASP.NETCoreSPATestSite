@@ -39,10 +39,10 @@ export const ApplicationPaths = {
   
   users: {
     get: `${apiPrefix}/users`,
-    delete: id => `${apiPrefix}/users/${id}`,
-    assignAdminRole: id => `${apiPrefix}/users/${id}/assign-admin-role`,
-    unassignAdminRole: id => `${apiPrefix}/users/${id}/unassign-admin-role`,
-    getAvatar: id => `${apiPrefix}/users/${id}/avatar`
+    delete: (id: string) => `${apiPrefix}/users/${id}`,
+    assignAdminRole: (id: string) => `${apiPrefix}/users/${id}/assign-admin-role`,
+    unassignAdminRole: (id: string) => `${apiPrefix}/users/${id}/unassign-admin-role`,
+    getAvatar: (id: string) => `${apiPrefix}/users/${id}/avatar`
   }
 };
 
